@@ -4,6 +4,8 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.Timer;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -16,6 +18,7 @@ public class Robot extends IterativeRobot {
 	RobotDrive myRobot;
 	Joystick stick;
 	int autoLoopCounter;
+	CameraServer server;
 	
     /**
      * This function is run when the robot is first started up and should be
@@ -50,14 +53,22 @@ public class Robot extends IterativeRobot {
      * This function is called once each time the robot enters tele-operated mode
      */
     public void teleopInit(){
+    	server = CameraServer.getInstance();
+        server.setQuality(50);
+        //the camera name (ex "cam0") can be found through the roborio web interface
+        server.startAutomaticCapture("cam0");
     }
 
     /**
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-      //myRobot.setInvertedMotor(MotorType.kFrontLeft, true);
-      //myRobot.arcadeDrive(stick);
+     
+    	while (isOperatorControl() && isEnabled()) {
+    		 //myRobot.setInvertedMotor(MotorType.kFrontLeft, true);
+    	     //myRobot.arcadeDrive(stick);
+            Timer.delay(0.005); // wait for a motor update time
+    	}
     }
     
     /**
@@ -68,3 +79,5 @@ public class Robot extends IterativeRobot {
     }
     
 }
+
+    
